@@ -11,6 +11,8 @@ import meteordevelopment.meteorclient.pathing.PathManagers;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.movement.elytrafly.ElytraFly;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
@@ -194,6 +196,7 @@ public class AntiAFK extends Module {
 
     private boolean isAFK() {
         if (PathManagers.get().isPathing()) return false;
+        if (Modules.get().isActive(ElytraFly.class)) return false;
         return timeSinceLastInput() > 1000 * auto.get();
     }
 

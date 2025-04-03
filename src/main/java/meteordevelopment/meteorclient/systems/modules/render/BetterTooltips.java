@@ -21,7 +21,6 @@ import meteordevelopment.meteorclient.utils.player.EChestMemory;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.tooltip.*;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.block.entity.BeehiveBlockEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.*;
 import net.minecraft.component.type.SuspiciousStewEffectsComponent.StewEffect;
@@ -285,22 +284,6 @@ public class BetterTooltips extends Module {
                         .map(ApplyEffectsConsumeEffect.class::cast)
                         .flatMap(apply -> apply.effects().stream())
                         .forEach(effect -> event.appendStart(getStatusText(effect)));
-                }
-            }
-        }
-
-        //Beehive
-        if (beehive.get()) {
-            if (event.itemStack().getItem() == Items.BEEHIVE || event.itemStack().getItem() == Items.BEE_NEST) {
-                BlockStateComponent blockStateComponent = event.itemStack().get(DataComponentTypes.BLOCK_STATE);
-                if (blockStateComponent != null) {
-                    String level = blockStateComponent.properties().get("honey_level");
-                    event.appendStart(Text.literal(String.format("%sHoney level: %s%s%s.", Formatting.GRAY, Formatting.YELLOW, level, Formatting.GRAY)));
-                }
-
-                List<BeehiveBlockEntity.BeeData> bees = event.itemStack().get(DataComponentTypes.BEES);
-                if (bees != null) {
-                    event.appendStart(Text.literal(String.format("%sBees: %s%d%s.", Formatting.GRAY, Formatting.YELLOW, bees.size(), Formatting.GRAY)));
                 }
             }
         }
