@@ -170,15 +170,7 @@ public class BetterTooltips extends Module {
         .build()
     );
 
-    private final Setting<Boolean> beehive = sgOther.add(new BoolSetting.Builder()
-        .name("beehive")
-        .description("Displays information about a beehive or bee nest.")
-        .defaultValue(true)
-        .onChanged(value -> updateTooltips = true)
-        .build()
-    );
-
-    //Hide flags
+    // Hide flags
 
     public final Setting<Boolean> tooltip = sgHideFlags.add(new BoolSetting.Builder()
         .name("tooltip")

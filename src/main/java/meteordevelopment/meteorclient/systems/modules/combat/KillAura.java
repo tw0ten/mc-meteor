@@ -48,7 +48,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-// TODO: this whole module is very poorly written
 public class KillAura extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final SettingGroup sgTargeting = settings.createGroup("Targeting");

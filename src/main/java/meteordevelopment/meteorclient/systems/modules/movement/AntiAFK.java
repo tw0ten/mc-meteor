@@ -7,6 +7,7 @@ package meteordevelopment.meteorclient.systems.modules.movement;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.mixin.InactivityFpsLimiterAccessor;
+import meteordevelopment.meteorclient.pathing.BaritoneUtils;
 import meteordevelopment.meteorclient.pathing.PathManagers;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Categories;
@@ -21,6 +22,8 @@ import net.minecraft.util.Util;
 
 import java.util.List;
 import java.util.Random;
+
+import baritone.api.BaritoneAPI;
 
 public class AntiAFK extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -195,7 +198,7 @@ public class AntiAFK extends Module {
     }
 
     private boolean isAFK() {
-        if (PathManagers.get().isPathing()) return false;
+        if (BaritoneUtils.IS_AVAILABLE && BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) return false;
         if (Modules.get().isActive(ElytraFly.class)) return false;
         return timeSinceLastInput() > 1000 * auto.get();
     }

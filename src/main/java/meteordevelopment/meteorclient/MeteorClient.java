@@ -59,6 +59,10 @@ public class MeteorClient implements ClientModInitializer {
 
     public static final long timestamp;
 
+    public static long uptime() {
+        return System.currentTimeMillis() - timestamp;
+    }
+
     static {
         MOD_META = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow().getMetadata();
 

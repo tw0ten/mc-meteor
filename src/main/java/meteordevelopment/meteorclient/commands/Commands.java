@@ -27,6 +27,7 @@ public class Commands {
         add(new BindCommand());
         add(new BindsCommand());
         add(new CommandsCommand());
+        add(new ConnectCommand());
         add(new DamageCommand());
         add(new DisconnectCommand());
         add(new DismountCommand());

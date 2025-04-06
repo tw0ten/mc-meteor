@@ -23,6 +23,8 @@ import net.minecraft.client.gui.screen.Screen;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
+import meteordevelopment.meteorclient.commands.Commands;
+
 public class MacrosTab extends Tab {
     public MacrosTab() {
         super("Macros");
@@ -45,8 +47,17 @@ public class MacrosTab extends Tab {
 
         @Override
         public void initWidgets() {
-            WTextBox textBox = add(theme.textBox("")).expandX().widget();
-            // TODO: running commands
+            WTable dispatch = add(theme.table()).expandX().widget();
+            WTextBox textBox = dispatch.add(theme.textBox("")).expandX().widget();
+            dispatch.add(theme.button("Enter")).widget().action = () -> {
+                try {
+                    // TODO: a limbo
+                    Commands.dispatch(textBox.get());
+                    reload();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            };
             // TODO: also add some sort of system hook for ssh
 
             WTable table = add(theme.table()).expandX().minWidth(400).widget();

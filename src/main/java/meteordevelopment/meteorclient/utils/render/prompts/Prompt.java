@@ -20,7 +20,6 @@ public abstract class Prompt<T> {
 
     protected String title = "";
     protected final List<String> messages = new ArrayList<>();
-    protected boolean dontShowAgainCheckboxVisible = true;
     protected String id = null;
 
     protected Prompt(GuiTheme theme, Screen parent) {
@@ -40,11 +39,6 @@ public abstract class Prompt<T> {
 
     public T message(String message, Object... args) {
         this.messages.add(String.format(message, args));
-        return (T) this;
-    }
-
-    public T dontShowAgainCheckboxVisible(boolean visible) {
-        this.dontShowAgainCheckboxVisible = visible;
         return (T) this;
     }
 
@@ -89,7 +83,7 @@ public abstract class Prompt<T> {
             for (String line : messages) add(theme.label(line)).expandX();
             add(theme.horizontalSeparator()).expandX();
 
-            if (dontShowAgainCheckboxVisible) {
+            if (id != null) {
                 WHorizontalList checkboxContainer = add(theme.horizontalList()).expandX().widget();
                 dontShowAgainCheckbox = checkboxContainer.add(theme.checkbox(false)).widget();
                 checkboxContainer.add(theme.label("Don't show this again.")).expandX();

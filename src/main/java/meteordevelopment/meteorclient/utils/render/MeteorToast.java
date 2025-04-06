@@ -81,7 +81,7 @@ public class MeteorToast implements Toast {
         int titleY = 12;
 
         if (text != null) {
-            context.drawText(mc.textRenderer, title, x, 18, TITLE_COLOR, false);
+            context.drawText(mc.textRenderer, text, x, 18, TEXT_COLOR, false);
             titleY = 7;
         }
 

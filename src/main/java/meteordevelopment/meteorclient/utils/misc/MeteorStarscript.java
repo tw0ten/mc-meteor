@@ -83,10 +83,10 @@ public class MeteorStarscript {
         ss.set("ping", MeteorStarscript::ping);
         ss.set("time", () -> Value.string(Instant.now().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))));
         ss.set("uptime", new ValueMap()
-            .set("_toString", () -> Value.number(System.currentTimeMillis() - MeteorClient.timestamp))
-            .set("hours", () -> Value.number((System.currentTimeMillis() - MeteorClient.timestamp) / 1000 / 60 / 60))
-            .set("minutes", () -> Value.number((System.currentTimeMillis() - MeteorClient.timestamp) / 1000 / 60 % 60))
-            .set("seconds", () -> Value.number((System.currentTimeMillis() - MeteorClient.timestamp) / 1000 % 60))
+            .set("_toString", () -> Value.number(MeteorClient.uptime()))
+            .set("seconds", () -> Value.number(MeteorClient.uptime() / 1000 % 60))
+            .set("minutes", () -> Value.number(MeteorClient.uptime() / 1000 / 60 % 60))
+            .set("hours", () -> Value.number(MeteorClient.uptime() / 1000 / 60 / 60))
         );
         ss.set("cps", () -> Value.number(CPSUtils.getCpsAverage()));
 

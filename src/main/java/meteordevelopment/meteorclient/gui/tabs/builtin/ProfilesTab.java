@@ -14,7 +14,6 @@ import meteordevelopment.meteorclient.gui.tabs.WindowTabScreen;
 import meteordevelopment.meteorclient.gui.widgets.containers.WContainer;
 import meteordevelopment.meteorclient.gui.widgets.containers.WTable;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
-import meteordevelopment.meteorclient.gui.widgets.pressable.WMinus;
 import meteordevelopment.meteorclient.systems.profiles.Profile;
 import meteordevelopment.meteorclient.systems.profiles.Profiles;
 import meteordevelopment.meteorclient.utils.Utils;
@@ -66,26 +65,26 @@ public class ProfilesTab extends Tab {
             for (Profile profile : Profiles.get()) {
                 table.add(theme.label(profile.name.get())).expandCellX();
 
-                WButton save = table.add(theme.button("Save")).widget();
-                save.action = () -> YesNoPrompt.create().dontShowAgainCheckboxVisible(false)
+                table.add(theme.button("Save")).widget()
+                    .action = YesNoPrompt.create()
                     .title(profile.name.get()).message("Save this profile?")
-                    .onYes(profile::save).show();
+                    .onYes(profile::save)::show;
 
-                WButton load = table.add(theme.button("Load")).widget();
-                load.action = () -> YesNoPrompt.create().dontShowAgainCheckboxVisible(false)
+                table.add(theme.button("Load")).widget()
+                    .action = YesNoPrompt.create()
                     .title(profile.name.get()).message("Load this profile?")
-                    .onYes(profile::load).show();
+                    .onYes(profile::load)::show;
 
-                WButton edit = table.add(theme.button(GuiRenderer.EDIT)).widget();
-                edit.action = () -> mc.setScreen(new EditProfileScreen(theme, profile, this::reload));
+                table.add(theme.button(GuiRenderer.EDIT)).widget()
+                    .action = () -> mc.setScreen(new EditProfileScreen(theme, profile, this::reload));
 
-                WMinus remove = table.add(theme.minus()).widget();
-                remove.action = () -> YesNoPrompt.create().dontShowAgainCheckboxVisible(false)
+                table.add(theme.minus()).widget()
+                    .action = YesNoPrompt.create()
                     .title(profile.name.get()).message("Delete this profile?")
                     .onYes(() -> {
                         Profiles.get().remove(profile);
                         reload();
-                    }).show();
+                    })::show;
 
                 table.row();
             }

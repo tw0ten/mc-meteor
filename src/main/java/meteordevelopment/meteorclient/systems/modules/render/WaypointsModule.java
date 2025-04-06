@@ -222,9 +222,9 @@ public class WaypointsModule extends Module {
             WButton edit = table.add(theme.button(GuiRenderer.EDIT)).widget();
             edit.action = () -> mc.setScreen(new EditWaypointScreen(theme, waypoint, () -> initTable(theme, table)));
 
-            // Goto
+            // goto
             if (validDim) {
-                WButton gotoB = table.add(theme.button("Goto")).widget();
+                WButton gotoB = table.add(theme.button("goto")).widget();
                 gotoB.action = () -> {
                     if (PathManagers.get().isPathing())
                         PathManagers.get().stop();
