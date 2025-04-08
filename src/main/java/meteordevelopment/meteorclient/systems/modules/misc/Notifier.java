@@ -403,7 +403,7 @@ public class Notifier extends Module {
 
     private String formatSignText(SignText text) {
         return String.join("\n", Arrays.stream(text.getMessages(false))
-                .map(i -> Formatting.WHITE + i.getString()).toArray(String[]::new))
+                .map(i -> Formatting.WHITE + i.getString().replace("%", "%%")).toArray(String[]::new))
             .replace("\n", Formatting.GRAY + "-") + Formatting.GRAY;
     }
 
