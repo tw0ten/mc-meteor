@@ -6,7 +6,6 @@
 package meteordevelopment.meteorclient.systems.modules.movement;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.mixin.InactivityFpsLimiterAccessor;
 import meteordevelopment.meteorclient.pathing.BaritoneUtils;
 import meteordevelopment.meteorclient.pathing.PathManagers;
 import meteordevelopment.meteorclient.settings.*;
@@ -194,7 +193,7 @@ public class AntiAFK extends Module {
     }
 
     private long timeSinceLastInput() {
-        return Util.getMeasuringTimeMs() - ((InactivityFpsLimiterAccessor) mc.getInactivityFpsLimiter()).lastInputTime();
+        return Util.getMeasuringTimeMs() - mc.getInactivityFpsLimiter().lastInputTime;
     }
 
     private boolean isAFK() {
