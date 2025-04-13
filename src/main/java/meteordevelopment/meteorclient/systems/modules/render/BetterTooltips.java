@@ -41,6 +41,7 @@ import net.minecraft.util.Formatting;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_ALT;
 
@@ -180,64 +181,8 @@ public class BetterTooltips extends Module {
     );
 
     public final Setting<Boolean> additional = sgHideFlags.add(new BoolSetting.Builder()
-        .name("additional")
-        .description("Show potion effects, firework status, book author, etc when it's hidden.")
-        .defaultValue(false)
-        .build()
-    );
-
-    public final Setting<Boolean> armorTrim = sgHideFlags.add(new BoolSetting.Builder()
-        .name("armor-trim")
-        .description("Show armor trims when it's hidden.")
-        .defaultValue(false)
-        .build()
-    );
-
-    public final Setting<Boolean> attributeModifiers = sgHideFlags.add(new BoolSetting.Builder()
-        .name("attribute-modifiers")
-        .description("Show item modifiers when it's hidden.")
-        .defaultValue(false)
-        .build()
-    );
-
-    public final Setting<Boolean> canBreak = sgHideFlags.add(new BoolSetting.Builder()
-        .name("can-break")
-        .description("Show \"can_break\" component when it's hidden.")
-        .defaultValue(false)
-        .build()
-    );
-
-    public final Setting<Boolean> canPlaceOn = sgHideFlags.add(new BoolSetting.Builder()
-        .name("can-place-on")
-        .description("Show \"can_place_on\" component when it's hidden.")
-        .defaultValue(false)
-        .build()
-    );
-
-    public final Setting<Boolean> dye = sgHideFlags.add(new BoolSetting.Builder()
-        .name("dye")
-        .description("Show dyed item tags when it's hidden.")
-        .defaultValue(false)
-        .build()
-    );
-
-    public final Setting<Boolean> enchantments = sgHideFlags.add(new BoolSetting.Builder()
-        .name("enchantments")
-        .description("Show enchantments when it's hidden.")
-        .defaultValue(false)
-        .build()
-    );
-
-    public final Setting<Boolean> jukeboxPlayable = sgHideFlags.add(new BoolSetting.Builder()
-        .name("jukebox-playable")
-        .description("Show if something is playable in a jukebox when it's hidden.")
-        .defaultValue(true)
-        .build()
-    );
-
-    public final Setting<Boolean> unbreakable = sgHideFlags.add(new BoolSetting.Builder()
-        .name("unbreakable")
-        .description("Show \"Unbreakable\" component when it's hidden.")
+        .name("tooltip-components")
+        .description("Shows tooltip components when they're hidden - e.g. enchantments, attributes, lore, etc.")
         .defaultValue(false)
         .build()
     );
@@ -333,8 +278,8 @@ public class BetterTooltips extends Module {
         // Banner preview
         else if (event.itemStack.getItem() instanceof BannerItem && previewBanners()) {
             event.tooltipData = new BannerTooltipComponent(event.itemStack);
-        } else if (event.itemStack.getItem() instanceof BannerPatternItem bannerPatternItem && previewBanners()) {
-            event.tooltipData = createBannerFromBannerPatternItem(bannerPatternItem);
+        } else if (event.itemStack.contains(DataComponentTypes.PROVIDES_BANNER_PATTERNS) && previewBanners()) {
+            event.tooltipData = createBannerFromBannerPatternItem(event.itemStack);
         } else if (event.itemStack.getItem() == Items.SHIELD && previewBanners()) {
             if (!event.itemStack.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT).layers().isEmpty()) {
                 event.tooltipData = createBannerFromShield(event.itemStack);
@@ -358,32 +303,24 @@ public class BetterTooltips extends Module {
         }
     }
 
-    public void applyCompactShulkerTooltip(ItemStack shulkerItem, List<Text> tooltip) {
-        if (shulkerItem.contains(DataComponentTypes.CONTAINER_LOOT)) {
-            tooltip.add(Text.literal("???????"));
+    public void applyCompactShulkerTooltip(List<ItemStack> stacks, Consumer<Text> textConsumer) {
+        Object2IntMap<Item> counts = new Object2IntOpenHashMap<>();
+
+        for (ItemStack item : stacks) {
+            if (item.isEmpty()) continue;
+
+            int count = counts.getInt(item.getItem());
+            counts.put(item.getItem(), count + item.getCount());
         }
 
-        if (Utils.hasItems(shulkerItem)) {
-            Utils.getItemsInContainerItem(shulkerItem, ITEMS);
+        counts.keySet().stream().sorted(Comparator.comparingInt(value -> -counts.getInt(value))).limit(5).forEach(item -> {
+            MutableText mutableText = item.getName().copyContentOnly();
+            mutableText.append(Text.literal(" x").append(String.valueOf(counts.getInt(item))).formatted(Formatting.GRAY));
+            textConsumer.accept(mutableText);
+        });
 
-            Object2IntMap<Item> counts = new Object2IntOpenHashMap<>();
-
-            for (ItemStack item : ITEMS) {
-                if (item.isEmpty()) continue;
-
-                int count = counts.getInt(item.getItem());
-                counts.put(item.getItem(), count + item.getCount());
-            }
-
-            counts.keySet().stream().sorted(Comparator.comparingInt(value -> -counts.getInt(value))).limit(5).forEach(item -> {
-                MutableText mutableText = item.getName().copyContentOnly();
-                mutableText.append(Text.literal(" x").append(String.valueOf(counts.getInt(item))).formatted(Formatting.GRAY));
-                tooltip.add(mutableText);
-            });
-
-            if (counts.size() > 5) {
-                tooltip.add((Text.translatable("container.shulkerBox.more", counts.size() - 5)).formatted(Formatting.ITALIC));
-            }
+        if (counts.size() > 5) {
+            textConsumer.accept((Text.translatable("container.shulkerBox.more", counts.size() - 5)).formatted(Formatting.ITALIC));
         }
     }
 
@@ -396,7 +333,7 @@ public class BetterTooltips extends Module {
                 || (event.itemStack().getItem() == Items.WRITTEN_BOOK && books.get())
                 || (event.itemStack().getItem() instanceof EntityBucketItem && entitiesInBuckets.get())
                 || (event.itemStack().getItem() instanceof BannerItem && banners.get())
-                || (event.itemStack().getItem() instanceof BannerPatternItem && banners.get())
+                || (event.itemStack().contains(DataComponentTypes.PROVIDES_BANNER_PATTERNS) && banners.get())
                 || (event.itemStack().getItem() == Items.SHIELD && banners.get())
         )) {
             // we don't want to add the spacer if the tooltip is hidden
@@ -434,9 +371,9 @@ public class BetterTooltips extends Module {
         return null;
     }
 
-    private BannerTooltipComponent createBannerFromBannerPatternItem(BannerPatternItem item) {
+    private BannerTooltipComponent createBannerFromBannerPatternItem(ItemStack item) {
         // I can't imagine getting the banner pattern from a banner pattern item would fail without some serious messing around
-        BannerPatternsComponent component = new BannerPatternsComponent.Builder().add(mc.player.getRegistryManager().getOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(item.getPattern()).get(0), DyeColor.WHITE).build();
+        BannerPatternsComponent component = new BannerPatternsComponent.Builder().add(mc.player.getRegistryManager().getOrThrow(RegistryKeys.BANNER_PATTERN).getOrThrow(item.get(DataComponentTypes.PROVIDES_BANNER_PATTERNS)).get(0), DyeColor.WHITE).build();
         return new BannerTooltipComponent(DyeColor.GRAY, component);
     }
 

@@ -22,8 +22,8 @@ public class SessionCommand extends Command {
             final var s = mc.getSession();
             sendMsg(Text.of(s.getUsername() + " session id: " + s.getSessionId())
                 .getWithStyle(Style.EMPTY
-                    .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, s.getSessionId()))
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("copy"))))
+                    .withClickEvent(new ClickEvent.CopyToClipboard(s.getSessionId()))
+                    .withHoverEvent(new HoverEvent.ShowText(Text.of("copy"))))
                 .getFirst());
             return SINGLE_SUCCESS;
         });
