@@ -71,6 +71,9 @@ public class BlockSelection extends Module {
 
     @EventHandler
     private void onRender(Render3DEvent event) {
+        if (mc.options.hudHidden) return;
+
+        // TODO: entity
         if (mc.crosshairTarget == null || !(mc.crosshairTarget instanceof BlockHitResult result) || result.getType() == HitResult.Type.MISS) return;
 
         if (hideInside.get() && result.isInsideBlock()) return;

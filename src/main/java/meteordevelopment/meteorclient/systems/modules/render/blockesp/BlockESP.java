@@ -253,7 +253,7 @@ public class BlockESP extends Module {
                 else chunk.render(event);
             }
 
-            if (tracers.get()) {
+            if (tracers.get() && !mc.options.hudHidden) {
                 for (ESPGroup group : groups) {
                     group.render(event);
                 }
