@@ -58,7 +58,6 @@ public class MacrosTab extends Tab {
                     e.printStackTrace();
                 }
             };
-            // TODO: also add some sort of system hook for ssh
 
             WTable table = add(theme.table()).expandX().minWidth(400).widget();
             initTable(table);

@@ -6,6 +6,7 @@
 package meteordevelopment.meteorclient.systems.macros;
 
 import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.systems.System;
@@ -17,6 +18,9 @@ import meteordevelopment.orbit.EventPriority;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +30,35 @@ public class Macros extends System<Macros> implements Iterable<Macro> {
 
     public Macros() {
         super("macros");
+
+        new Thread(() -> {
+            final var pipe = MeteorClient.FOLDER.toPath().resolve("in").toFile();
+            if (!pipe.exists())
+                try {
+                    Runtime.getRuntime().exec(new String[] {"mkfifo", pipe.toPath().toString()});
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            while (true) {
+                try (final var stream = new FileInputStream(pipe)) {
+                    final var buffer = new ByteArrayOutputStream();
+                    {
+                        final var temp = new byte[1024];
+                        var bytesRead = -1;
+                        while ((bytesRead = stream.read(temp)) != -1)
+                            buffer.write(temp, 0, bytesRead);
+                    }
+                    final var s = buffer.toString();
+                    if (s.length() == 0) {
+                        Thread.sleep(500);
+                        continue;
+                    }
+                    Commands.dispatch(s.replace("\n", ""));
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public static Macros get() {

@@ -5,6 +5,7 @@
 
 package meteordevelopment.meteorclient.systems.modules.render;
 
+import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.ColorSetting;
 import meteordevelopment.meteorclient.settings.ItemListSetting;
 import meteordevelopment.meteorclient.settings.Setting;
@@ -26,6 +27,13 @@ public class ItemHighlight extends Module {
         .build()
     );
 
+    private final Setting<Boolean> named = sgGeneral.add(new BoolSetting.Builder()
+        .name("named")
+        .description("Highlight items with a custom name.")
+        .defaultValue(true)
+        .build()
+    );
+
     private final Setting<SettingColor> color = sgGeneral.add(new ColorSetting.Builder()
         .name("color")
         .description("The color to highlight the items with.")
@@ -39,7 +47,7 @@ public class ItemHighlight extends Module {
     }
 
     public int getColor(ItemStack stack) {
-        if (stack != null && items.get().contains(stack.getItem()) && isActive()) return color.get().getPacked();
+        if (stack != null && (items.get().contains(stack.getItem()) || (named.get() && stack.getCustomName() != null)) && isActive()) return color.get().getPacked();
         return -1;
     }
 }
