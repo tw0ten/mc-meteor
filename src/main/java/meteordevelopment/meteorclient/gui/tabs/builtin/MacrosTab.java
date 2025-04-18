@@ -12,7 +12,6 @@ import meteordevelopment.meteorclient.gui.tabs.Tab;
 import meteordevelopment.meteorclient.gui.tabs.TabScreen;
 import meteordevelopment.meteorclient.gui.tabs.WindowTabScreen;
 import meteordevelopment.meteorclient.gui.widgets.containers.WTable;
-import meteordevelopment.meteorclient.gui.widgets.input.WTextBox;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WMinus;
 import meteordevelopment.meteorclient.settings.Settings;
@@ -22,8 +21,6 @@ import meteordevelopment.meteorclient.utils.misc.NbtUtils;
 import net.minecraft.client.gui.screen.Screen;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
-
-import meteordevelopment.meteorclient.commands.Commands;
 
 public class MacrosTab extends Tab {
     public MacrosTab() {
@@ -47,18 +44,6 @@ public class MacrosTab extends Tab {
 
         @Override
         public void initWidgets() {
-            WTable dispatch = add(theme.table()).expandX().widget();
-            WTextBox textBox = dispatch.add(theme.textBox("")).expandX().widget();
-            dispatch.add(theme.button("Enter")).widget().action = () -> {
-                try {
-                    // TODO: a limbo
-                    Commands.dispatch(textBox.get());
-                    reload();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            };
-
             WTable table = add(theme.table()).expandX().minWidth(400).widget();
             initTable(table);
 

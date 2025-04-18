@@ -6,13 +6,13 @@
 package meteordevelopment.meteorclient.systems.macros;
 
 import meteordevelopment.meteorclient.MeteorClient;
-import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.events.meteor.KeyEvent;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.systems.System;
 import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.utils.misc.NbtUtils;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import net.minecraft.nbt.NbtCompound;
@@ -35,7 +35,7 @@ public class Macros extends System<Macros> implements Iterable<Macro> {
             final var pipe = MeteorClient.FOLDER.toPath().resolve("in").toFile();
             if (!pipe.exists())
                 try {
-                    Runtime.getRuntime().exec(new String[] {"mkfifo", pipe.toPath().toString()});
+                    Runtime.getRuntime().exec(new String[] { "mkfifo", pipe.toPath().toString() });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -48,12 +48,13 @@ public class Macros extends System<Macros> implements Iterable<Macro> {
                         while ((bytesRead = stream.read(temp)) != -1)
                             buffer.write(temp, 0, bytesRead);
                     }
-                    final var s = buffer.toString();
+                    final var s = buffer.toString().replace("\n", " ");
+                    MeteorClient.LOG.info(pipe.toPath() + ": " + s);
                     if (s.length() == 0) {
                         Thread.sleep(500);
                         continue;
                     }
-                    Commands.dispatch(s.replace("\n", ""));
+                    ChatUtils.sendPlayerMsg(s);
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }

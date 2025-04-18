@@ -73,8 +73,6 @@ public class HudRenderer {
     public void end() {
         Renderer2D.COLOR.render();
 
-        runPostTasks();
-
         if (hud.hasCustomFont()) {
             // Render fonts that were visited this frame and move to cache which weren't visited
             for (Iterator<FontHolder> it = fontsInUse.values().iterator(); it.hasNext(); ) {
@@ -101,12 +99,10 @@ public class HudRenderer {
             VanillaTextRenderer.INSTANCE.scaleIndividually = false;
         }
 
-        this.drawContext = null;
-    }
-
-    private void runPostTasks() {
         for (Runnable task : postTasks) task.run();
         postTasks.clear();
+
+        this.drawContext = null;
     }
 
     public void line(double x1, double y1, double x2, double y2, Color color) {

@@ -4,9 +4,11 @@
 - Add Script-Write module to use Starscript in signs and books.
 - Add Tracers option to highlight only specific items.
 - Add a confirm prompt when saving/loading/deleting profiles.
+- Add a pipe at ./meteor-client/in to run commands through.
 - Add allow-flying option to Kill-Aura.
 - Add confirm-disconnect option to Auto-Reconnect.
 - Add effect-ran-out and log-signs options to Notifier.
+- Add named option to Item-Highlight.
 - Add no-beds option to No-Interact.
 - Add scroll option to Better-Tab.
 - Add session command.
