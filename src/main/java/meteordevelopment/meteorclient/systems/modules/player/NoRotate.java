@@ -10,7 +10,6 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import meteordevelopment.orbit.EventPriority;
 import net.minecraft.entity.player.PlayerPosition;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
