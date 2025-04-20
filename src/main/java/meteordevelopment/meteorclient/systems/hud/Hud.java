@@ -12,6 +12,7 @@ import meteordevelopment.meteorclient.gui.WidgetScreen;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.System;
 import meteordevelopment.meteorclient.systems.Systems;
+import meteordevelopment.meteorclient.systems.config.Config;
 import meteordevelopment.meteorclient.systems.hud.elements.*;
 import meteordevelopment.meteorclient.systems.hud.screens.HudEditorScreen;
 import meteordevelopment.meteorclient.utils.Utils;
@@ -50,6 +51,7 @@ public class Hud extends System<Hud> implements Iterable<HudElement> {
         .onChanged(aBoolean -> {
             for (HudElement element : elements) element.onFontChanged();
         })
+        .visible(Config.get().customFont::get)
         .build()
     );
 
@@ -250,13 +252,11 @@ public class Hud extends System<Hud> implements Iterable<HudElement> {
 
     @EventHandler
     private void onCustomFontChanged(CustomFontChangedEvent event) {
-        if (customFont.get()) {
-            for (HudElement element : elements) element.onFontChanged();
-        }
+        for (HudElement element : elements) element.onFontChanged();
     }
 
     public boolean hasCustomFont() {
-        return customFont.get();
+        return customFont.get() && Config.get().customFont.get();
     }
 
     public double getTextScale() {
