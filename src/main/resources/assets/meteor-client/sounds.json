@@ -1,7 +1,67 @@
 {
-  "chicken_jockey": {
+  "chicken_jockey.chicken_jockey": {
     "sounds": [
-      "meteor-client:chicken_jockey"
+      "meteor-client:chicken_jockey/chicken_jockey"
+    ]
+  },
+  "chicken_jockey.chicken": {
+    "sounds": [
+      "meteor-client:chicken_jockey/chicken"
+    ]
+  },
+  "chicken_jockey.jockey": {
+    "sounds": [
+      "meteor-client:chicken_jockey/jockey"
+    ]
+  },
+  "chicken_jockey.water_bucket": {
+    "sounds": [
+      "meteor-client:chicken_jockey/water_bucket"
+    ]
+  },
+  "chicken_jockey.release": {
+    "sounds": [
+      "meteor-client:chicken_jockey/release"
+    ]
+  },
+  "chicken_jockey.flint_and_steel": {
+    "sounds": [
+      "meteor-client:chicken_jockey/flint_and_steel"
+    ]
+  },
+  "chicken_jockey.an_ender_pearl": {
+    "sounds": [
+      "meteor-client:chicken_jockey/an_ender_pearl"
+    ]
+  },
+  "chicken_jockey.welcome_to_the_overworld": {
+    "sounds": [
+      "meteor-client:chicken_jockey/welcome_to_the_overworld"
+    ]
+  },
+  "chicken_jockey.coming_in_hot": {
+    "sounds": [
+      "meteor-client:chicken_jockey/coming_in_hot"
+    ]
+  },
+  "chicken_jockey.crafting_table": {
+    "sounds": [
+      "meteor-client:chicken_jockey/crafting_table"
+    ]
+  },
+  "chicken_jockey.elytra_wingsuits": {
+    "sounds": [
+      "meteor-client:chicken_jockey/elytra_wingsuits"
+    ]
+  },
+  "chicken_jockey.firework_rockets": {
+    "sounds": [
+      "meteor-client:chicken_jockey/firework_rockets"
+    ]
+  },
+  "chicken_jockey.the_nether": {
+    "sounds": [
+      "meteor-client:chicken_jockey/the_nether"
     ]
   }
 }
