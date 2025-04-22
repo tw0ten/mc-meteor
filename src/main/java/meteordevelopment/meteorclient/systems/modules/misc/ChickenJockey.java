@@ -123,7 +123,7 @@ public class ChickenJockey extends Module {
 
     @EventHandler
     private void onEntityAdded(final EntityAddedEvent event) {
-        if (chickenJockeyEnabled.get()) { // TODO: ????
+        if (chickenJockeyEnabled.get() && false) { // TODO: ????
             if (event.entity.hasVehicle())
                 chickenJockey(event.entity.getVehicle());
             if (event.entity.hasPassengers())
@@ -154,8 +154,8 @@ public class ChickenJockey extends Module {
                     }
                 chickenJockey(i, e);
             }
-            case final PlayerRespawnS2CPacket packet -> { // TODO
-                if (!dimensions.get())
+            case final PlayerRespawnS2CPacket packet -> {
+                if (!dimensions.get() || true) // TODO
                     return;
                 if (PlayerUtils.getDimension() == Dimension.Nether) {
                     info("THE NETHER");
@@ -186,9 +186,9 @@ public class ChickenJockey extends Module {
                     info("RELEASE");
                     playSound(SOUNDS.RELEASE);
                 }
-                if (i == Items.BUCKET
+                if (i == Items.BUCKET // TODO
                         && mc.world.getBlockState(event.result.getBlockPos()).getFluidState().isOf(Fluids.WATER)) {
-                    info("WATER BUCKET"); // TODO
+                    info("WATER BUCKET");
                     playSound(SOUNDS.WATER_BUCKET);
                 }
             }
