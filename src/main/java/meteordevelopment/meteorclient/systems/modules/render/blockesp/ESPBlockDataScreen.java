@@ -46,7 +46,7 @@ public class ESPBlockDataScreen extends WindowScreen {
         sgGeneral.add(new ColorSetting.Builder()
             .name("line-color")
             .description("Color of lines.")
-            .defaultValue(new SettingColor(0, 255, 200))
+            .defaultValue(defaultColor())
             .onModuleActivated(settingColorSetting -> settingColorSetting.set(blockData.lineColor))
             .onChanged(settingColor -> {
                 blockData.lineColor.set(settingColor);
@@ -58,7 +58,7 @@ public class ESPBlockDataScreen extends WindowScreen {
         sgGeneral.add(new ColorSetting.Builder()
             .name("side-color")
             .description("Color of sides.")
-            .defaultValue(new SettingColor(0, 255, 200, 25))
+            .defaultValue(defaultColor().a(25))
             .onModuleActivated(settingColorSetting -> settingColorSetting.set(blockData.sideColor))
             .onChanged(settingColor -> {
                 blockData.sideColor.set(settingColor);
@@ -82,7 +82,7 @@ public class ESPBlockDataScreen extends WindowScreen {
         sgTracer.add(new ColorSetting.Builder()
             .name("tracer-color")
             .description("Color of tracer line.")
-            .defaultValue(new SettingColor(0, 255, 200, 125))
+            .defaultValue(defaultColor().a(125))
             .onModuleActivated(settingColorSetting -> settingColorSetting.set(blockData.tracerColor))
             .onChanged(settingColor -> {
                 blockData.tracerColor = settingColor;
@@ -102,5 +102,9 @@ public class ESPBlockDataScreen extends WindowScreen {
         }
 
         blockData.changed();
+    }
+
+    private SettingColor defaultColor() {
+        return block == null ? new SettingColor(0, 255, 200) : new SettingColor(block.getDefaultMapColor().color);
     }
 }

@@ -18,6 +18,7 @@ import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.RainbowColors;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.meteorclient.utils.world.Dimension;
@@ -45,6 +46,13 @@ public class BlockESP extends Module {
         .onChanged(blocks1 -> {
             if (isActive() && Utils.canUpdate()) onActivate();
         })
+        .build()
+    );
+
+    private final Setting<Boolean> blockColors = sgGeneral.add(new BoolSetting.Builder()
+        .name("block-colors")
+        .description("Use block map color by default.")
+        .defaultValue(true)
         .build()
     );
 
@@ -122,7 +130,16 @@ public class BlockESP extends Module {
 
     ESPBlockData getBlockData(Block block) {
         ESPBlockData blockData = blockConfigs.get().get(block);
-        return blockData == null ? defaultBlockConfig.get() : blockData;
+        return blockData == null ? blockColors.get() ? withBlockColor(block, defaultBlockConfig.get().copy()) : defaultBlockConfig.get() : blockData;
+    }
+
+    // TODO: suboptimal
+    private ESPBlockData withBlockColor(Block block, ESPBlockData data) {
+        Color color = new Color(block.getDefaultMapColor().color);
+        data.lineColor.set(color.a(data.lineColor.a));
+        data.sideColor.set(color.a(data.sideColor.a));
+        data.tracerColor.set(color.a(data.tracerColor.a));
+        return data;
     }
 
     private void updateChunk(int x, int z) {

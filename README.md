@@ -6,6 +6,7 @@
 - Add a confirm prompt when saving/loading/deleting profiles.
 - Add a pipe at ./meteor-client/in to run commands through.
 - Add allow-flying option to Kill-Aura.
+- Add block-colors option to Block-Esp.
 - Add confirm-disconnect option to Auto-Reconnect.
 - Add effect-ran-out and log-signs options to Notifier.
 - Add named option to Item-Highlight.
