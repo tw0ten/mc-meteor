@@ -166,6 +166,7 @@
     "SlimeBlockMixin",
     "SlotMixin",
     "SoundSystemMixin",
+    "SplashOverlayMixin",
     "SplashTextResourceSupplierMixin",
     "StatusEffectInstanceAccessor",
     "StatusEffectInstanceMixin",
