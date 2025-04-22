@@ -199,7 +199,7 @@ public class GuiRenderer {
     }
 
     public void tooltip(String text) {
-        tooltip = text;
+        tooltip = text.length() == 0 ? null : text;
     }
 
     public void quad(double x, double y, double width, double height, Color cTopLeft, Color cTopRight, Color cBottomRight, Color cBottomLeft) {
