@@ -18,9 +18,11 @@ public class BookTooltipComponent implements TooltipComponent, MeteorTooltipData
     private static final Identifier TEXTURE_BOOK_BACKGROUND = Identifier.of("textures/gui/book.png");
 
     private final Text page;
+    private final int pages;
 
-    public BookTooltipComponent(Text page) {
+    public BookTooltipComponent(Text page, int pages) {
         this.page = page;
+        this.pages = pages;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class BookTooltipComponent implements TooltipComponent, MeteorTooltipData
     @Override
     public void drawItems(TextRenderer textRenderer, int x, int y, int width, int height, DrawContext context) {
         // Background
-        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE_BOOK_BACKGROUND, x, y, 0, 12, 0, 112, 134, 179, 179);
+        // context.drawTexture(RenderLayer::getGuiTextured, TEXTURE_BOOK_BACKGROUND, x, y, 0, 0, getHeight(textRenderer), getWidth(textRenderer), getHeight(textRenderer), getWidth(textRenderer));
 
         // Content
         MatrixStack matrices = context.getMatrices();
@@ -50,7 +52,7 @@ public class BookTooltipComponent implements TooltipComponent, MeteorTooltipData
         matrices.scale(0.7f, 0.7f, 1f);
         int offset = 0;
         for (OrderedText line : textRenderer.wrapLines(page, 112)) {
-            context.drawText(textRenderer, line, 0, offset, 0x000000, false);
+            context.drawText(textRenderer, line, 0, offset, 0xFFFFFF, false);
             offset += 8;
         }
         matrices.pop();

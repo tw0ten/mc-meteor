@@ -271,8 +271,7 @@ public class BetterTooltips extends Module {
 
         // Book preview
         else if ((event.itemStack.getItem() == Items.WRITABLE_BOOK || event.itemStack.getItem() == Items.WRITTEN_BOOK) && previewBooks()) {
-            Text page = getFirstPage(event.itemStack);
-            if (page != null) event.tooltipData = new BookTooltipComponent(page);
+            event.tooltipData = getBookTooltip(event.itemStack);
         }
 
         // Banner preview
@@ -355,17 +354,17 @@ public class BetterTooltips extends Module {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private Text getFirstPage(ItemStack bookItem) {
+    private BookTooltipComponent getBookTooltip(ItemStack bookItem) {
         if (bookItem.get(DataComponentTypes.WRITABLE_BOOK_CONTENT) != null) {
             List<RawFilteredPair<String>> pages = bookItem.get(DataComponentTypes.WRITABLE_BOOK_CONTENT).pages();
 
             if (pages.isEmpty()) return null;
-            return Text.literal(pages.getFirst().get(false));
+            return new BookTooltipComponent(Text.literal(pages.getFirst().get(false)), pages.size());
         } else if (bookItem.get(DataComponentTypes.WRITTEN_BOOK_CONTENT) != null) {
             List<RawFilteredPair<Text>> pages = bookItem.get(DataComponentTypes.WRITTEN_BOOK_CONTENT).pages();
             if (pages.isEmpty()) return null;
 
-            return pages.getFirst().get(false);
+            return new BookTooltipComponent(pages.getFirst().get(false), pages.size());
         }
 
         return null;
