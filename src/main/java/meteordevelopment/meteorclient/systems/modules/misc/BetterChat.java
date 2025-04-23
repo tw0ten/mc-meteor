@@ -344,9 +344,9 @@ public class BetterChat extends Module {
     private void onPacketReceive(PacketEvent.Receive event) {
         if (logTitles.get())
             switch (event.packet) {
-                case TitleS2CPacket p when !p.text().getString().isEmpty() -> info("[" + logTitles.title + "] " + "Title: " + p.text().getString());
-                case SubtitleS2CPacket p when !p.text().getString().isEmpty() -> info("[" + logTitles.title + "] " + "Subtitle: " + p.text().getString());
-                case OverlayMessageS2CPacket p when !p.text().getString().isEmpty() -> info("[" + logTitles.title + "] " + "Actionbar: " + p.text().getString());
+                case TitleS2CPacket p when !p.text().getString().isEmpty() -> ChatUtils.sendMsg("Title", p.text());
+                case SubtitleS2CPacket p when !p.text().getString().isEmpty() -> ChatUtils.sendMsg("Subtitle", p.text());
+                case OverlayMessageS2CPacket p when !p.text().getString().isEmpty() -> ChatUtils.sendMsg("Actionbar", p.text());
                 default -> {}
             }
     }

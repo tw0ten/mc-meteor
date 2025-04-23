@@ -260,4 +260,8 @@ public class ChatUtils {
 
         return coordsText;
     }
+
+    public static String escape(String string) {
+        return string.replace("%", "%%").replace("(", "((");
+    }
 }

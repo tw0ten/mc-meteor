@@ -52,7 +52,6 @@ public class Notifier extends Module {
     private final SettingGroup sgVisualRange = settings.createGroup("Visual Range");
     private final SettingGroup sgPearl = settings.createGroup("Pearl");
     private final SettingGroup sgJoinsLeaves = settings.createGroup("Joins/Leaves");
-    private final SettingGroup sgOther = settings.createGroup("Other");
 
     // Totem Pops
 
@@ -193,6 +192,8 @@ public class Notifier extends Module {
         .defaultValue(true)
         .build()
     );
+
+    private final SettingGroup sgOther = settings.createGroup("Other");
 
     private final Setting<Boolean> effectRanOut = sgOther.add(new BoolSetting.Builder()
         .name("effect-ran-out")
@@ -370,7 +371,7 @@ public class Notifier extends Module {
                 if (player.deathTime > 0 || player.getHealth() <= 0) {
                     int pops = totemPopMap.removeInt(player.getUuid());
 
-                    ChatUtils.sendMsg(getChatId(player), Formatting.GRAY, "(highlight)%s (default)died after popping (highlight)%d (default)%s.", player.getName().getString(), pops, pops == 1 ? "totem" : "totems");
+                    ChatUtils.sendMsg(getChatId(player), Formatting.GRAY, "(highlight)%s(default) died after popping (highlight)%d(default) %s.", player.getName().getString(), pops, pops == 1 ? "totem" : "totems");
                     chatIdMap.removeInt(player.getUuid());
                 }
             }
@@ -379,36 +380,22 @@ public class Notifier extends Module {
 
     @EventHandler
     private void onChunkData(ChunkDataEvent event) {
-        if (logSigns.get()) {
+        if (logSigns.get())
             event.chunk().getBlockEntities().values().forEach((i) -> {
-                if (i instanceof SignBlockEntity e)
-                    logSign(e);
+                if (i instanceof SignBlockEntity sign)
+                    info("[%s]%s%s", logSigns.title, formatSignText(sign.getFrontText()), formatSignText(sign.getBackText()));
             });
-        }
-    }
-
-    private void logSign(SignBlockEntity sign) {
-        final var sb = new StringBuilder("[%s]");
-
-        final var front = sign.getFrontText();
-        if (!isEmpty(front)) sb.append("\n").append(formatSignText(front));
-        final var back = sign.getBackText();
-        if (!isEmpty(back)) sb.append("\n").append(formatSignText(back));
-
-        info(sb.toString(), logSigns.title);
-    }
-
-    private boolean isEmpty(SignText text) {
-        return Arrays.stream(text.getMessages(false)).allMatch(i -> i.getString().isEmpty());
     }
 
     private String formatSignText(SignText text) {
-        return String.join("(default)-", Arrays.stream(text.getMessages(false))
-                .map(i -> "(highlight)" + i.getString()
-                    .replace("%", "%%")
-                    .replace("(", "((")
-                ).toArray(String[]::new)
-            ) + "(default)";
+        if (Arrays.stream(text.getMessages(false)).allMatch(i -> i.getString().isEmpty()))
+            return "";
+        return "\n" + String.join(
+            "(default)-",
+            Arrays.stream(text.getMessages(false))
+                .map(i -> "(highlight)" + ChatUtils.escape(i.getString()))
+                .toArray(String[]::new)
+        ) + "(default)";
     }
 
     private int getChatId(Entity entity) {
