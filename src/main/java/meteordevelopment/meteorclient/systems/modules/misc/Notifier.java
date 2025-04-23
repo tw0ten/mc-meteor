@@ -19,6 +19,7 @@ import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.entity.fakeplayer.FakePlayerEntity;
+import meteordevelopment.meteorclient.utils.misc.Names;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
@@ -342,7 +343,7 @@ public class Notifier extends Module {
                     ChatUtils.sendMsg(getChatId(entity), Formatting.GRAY, "(highlight)%s (default)popped (highlight)%d (default)%s.", entity.getName().getString(), pops, pops == 1 ? "totem" : "totems");
                 }
             }
-            case RemoveEntityStatusEffectS2CPacket packet when effectRanOut.get() && packet.getEntity(mc.world) == mc.player -> info("Effect ran out: " + packet.effect().getIdAsString());
+            case RemoveEntityStatusEffectS2CPacket packet when effectRanOut.get() && packet.getEntity(mc.world) == mc.player -> info("Effect ran out: (highlight)%s %d(default).", Names.get(packet.effect().value()), mc.player.getStatusEffect(packet.effect()).getAmplifier() + 1);
             default -> {}
         }
     }
@@ -387,14 +388,14 @@ public class Notifier extends Module {
     }
 
     private void logSign(SignBlockEntity sign) {
-        final var sb = new StringBuilder("[" + logSigns.title + "]");
+        final var sb = new StringBuilder("[%s]");
 
         final var front = sign.getFrontText();
         if (!isEmpty(front)) sb.append("\n").append(formatSignText(front));
         final var back = sign.getBackText();
         if (!isEmpty(back)) sb.append("\n").append(formatSignText(back));
 
-        info(sb.toString());
+        info(sb.toString(), logSigns.title);
     }
 
     private boolean isEmpty(SignText text) {
@@ -402,9 +403,12 @@ public class Notifier extends Module {
     }
 
     private String formatSignText(SignText text) {
-        return String.join("\n", Arrays.stream(text.getMessages(false))
-                .map(i -> Formatting.WHITE + i.getString().replace("%", "%%")).toArray(String[]::new))
-            .replace("\n", Formatting.GRAY + "-") + Formatting.GRAY;
+        return String.join("(default)-", Arrays.stream(text.getMessages(false))
+                .map(i -> "(highlight)" + i.getString()
+                    .replace("%", "%%")
+                    .replace("(", "((")
+                ).toArray(String[]::new)
+            ) + "(default)";
     }
 
     private int getChatId(Entity entity) {

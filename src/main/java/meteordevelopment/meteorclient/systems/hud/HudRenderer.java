@@ -33,6 +33,7 @@ import java.util.List;
 
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
+// TODO: f3+t in game breaks stuff
 public class HudRenderer {
     public static final HudRenderer INSTANCE = new HudRenderer();
 

@@ -215,34 +215,25 @@ public class ChatUtils {
         while (reader.canRead()) {
             char c = reader.read();
             if (c == '(') {
-                text.append(Text.literal(result.toString()).setStyle(style));
-                result.setLength(0);
-                result.append(c);
-                formatting = true;
+                formatting = !formatting;
+                if (formatting) {
+                    text.append(Text.literal(result.toString()).setStyle(style));
+                    result.setLength(0);
+                } else result.append(c);
             } else {
-                result.append(c);
-
                 if (formatting && c == ')') {
-                    switch (result.toString()) {
-                        case "(default)" -> {
-                            style = style.withFormatting(defaultColor);
-                            result.setLength(0);
-                        }
-                        case "(highlight)" -> {
-                            style = style.withFormatting(Formatting.WHITE);
-                            result.setLength(0);
-                        }
-                        case "(underline)" -> {
-                            style = style.withFormatting(Formatting.UNDERLINE);
-                            result.setLength(0);
-                        }
-                        case "(bold)" -> {
-                            style = style.withFormatting(Formatting.BOLD);
-                            result.setLength(0);
-                        }
-                    }
                     formatting = false;
+                    switch (result.toString()) {
+                        case "default" -> style = style.withFormatting(defaultColor);
+                        case "highlight" -> style = style.withFormatting(Formatting.WHITE);
+                        case "underline" -> style = style.withFormatting(Formatting.UNDERLINE);
+                        case "bold" -> style = style.withFormatting(Formatting.BOLD);
+                        default -> { continue; }
+                    }
+                    result.setLength(0);
+                    continue;
                 }
+                result.append(c);
             }
         }
 
