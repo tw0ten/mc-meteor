@@ -72,10 +72,13 @@ public class WMeteorModule extends WPressable implements MeteorWidget {
         animationProgress2 = MathHelper.clamp(animationProgress2, 0, 1);
 
         if (animationProgress1 > 0) {
-            renderer.quad(x, y, width * animationProgress1, height, theme.moduleBackground.get());
+            renderer.quad(x, y, width * animationProgress1 / 2, height, theme.moduleBackground.get());
+            renderer.quad(x + width * (1 - animationProgress1 / 2), y, width * animationProgress1 / 2, height, theme.moduleBackground.get());
         }
         if (animationProgress2 > 0) {
-            renderer.quad(x, y + height * (1 - animationProgress2), theme.scale(2), height * animationProgress2, theme.accentColor.get());
+            var w = theme.scale(2);
+            renderer.quad(x, y + height * (1 - animationProgress2), w, height * animationProgress2, theme.accentColor.get());
+            renderer.quad(x + width - w, y + height * (1 - animationProgress2), w, height * animationProgress2, theme.accentColor.get());
         }
 
         double x = this.x + pad;

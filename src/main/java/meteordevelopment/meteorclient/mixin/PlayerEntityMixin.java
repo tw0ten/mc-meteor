@@ -54,7 +54,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Inject(method = "dropItem", at = @At("HEAD"), cancellable = true)
     private void onDropItem(ItemStack stack, boolean retainOwnership, CallbackInfoReturnable<ItemEntity> cir) {
         if (getWorld().isClient && !stack.isEmpty()) {
-            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(stack)).isCancelled()) cir.setReturnValue(null);
+            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(stack, mc.player.getInventory().getSlotWithStack(stack))).isCancelled()) cir.setReturnValue(null);
         }
     }
 

@@ -26,11 +26,11 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import org.lwjgl.glfw.GLFW;
-
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -40,7 +40,7 @@ public class InventoryTweaks extends Module {
     private final SettingGroup sgAutoDrop = settings.createGroup("Auto Drop");
     private final SettingGroup sgStealDump = settings.createGroup("Steal and Dump");
     private final SettingGroup sgAutoSteal = settings.createGroup("Auto Steal");
-    private final SettingGroup sgAutoCraft = settings.createGroup("Auto Craft"); // TODO: this
+    // private final SettingGroup sgAutoCraft = settings.createGroup("Auto Craft"); // TODO
 
     // General
 
@@ -57,20 +57,19 @@ public class InventoryTweaks extends Module {
         .build()
     );
 
-    private final Setting<Boolean> antiDropEquipped = sgGeneral.add(new BoolSetting.Builder()
-        .name("equipped")
-        .description("Whether or not to drop items equipped in armor slots.")
-        .defaultValue(true)
-        .build()
-    );
-
-    private final Setting<Boolean> antiDropHotbar = sgGeneral.add(new BoolSetting.Builder()
-        .name("hotbar")
-        .description("Whether or not to drop items from your hotbar.")
+    private final Setting<Boolean> antiDropHand = sgGeneral.add(new BoolSetting.Builder()
+        .name("anti-drop-hand")
+        .description("Prevent dropping held item.")
         .defaultValue(false)
         .build()
     );
 
+    private final Setting<Keybind> lockBind = sgGeneral.add(new KeybindSetting.Builder()
+        .name("lock-bind")
+        .description("Hold and click slot to lock it.")
+        .defaultValue(Keybind.fromKey(GLFW.GLFW_KEY_LEFT_ALT))
+        .build()
+    );
 
     private final Setting<Boolean> xCarry = sgGeneral.add(new BoolSetting.Builder()
         .name("xcarry")
@@ -246,6 +245,7 @@ public class InventoryTweaks extends Module {
         .build()
     );
 
+    private final boolean[] lockedSlots = new boolean[PlayerScreenHandler.OFFHAND_ID + 1];
     private InventorySorter sorter;
     private boolean invOpened;
 
@@ -332,14 +332,33 @@ public class InventoryTweaks extends Module {
     }
 
     // Anti Drop
-    // TODO: add locking slots
+
+    private boolean isInInventory() {
+        return mc.player.currentScreenHandler instanceof PlayerScreenHandler;
+    }
+
+    private boolean isLocked(int slot) {
+        if (slot < 0 || slot >= lockedSlots.length) return false;
+        return lockedSlots[slot];
+    }
+
+    public boolean lockPressed() {
+        return isActive() && lockBind.get().isPressed() && isInInventory();
+    }
+
+    public void lock(int slot) {
+        if (slot < 0 || slot >= lockedSlots.length) return;
+        if (lockedSlots[slot] = !lockedSlots[slot]) info("Locked slot %d.", slot);
+        else info("Unlocked slot %d.", slot);
+    }
 
     @EventHandler
     private void onDropItems(DropItemsEvent event) {
-        // TODO: SlotUtils.indexToId seems broken
-        if ((antiDropEquipped.get() && SlotUtils.isArmor(event.slotId))
-                || (antiDropHotbar.get() && SlotUtils.isHotbar(event.slotId))
-                || antiDropItems.get().contains(event.itemStack.getItem()))
+        // info("%d %s %s", event.slotId, isLocked(event.slotId) ? "should be locked" : "nope", isInInventory() ? "inventory" : "not");
+        if (antiDropItems.get().contains(event.itemStack.getItem())
+                || (mc.player.currentScreenHandler instanceof PlayerScreenHandler psh && (
+                    (antiDropHand.get() && PlayerScreenHandler.isInHotbar(event.slotId))
+                    || (isInInventory() && isLocked(event.slotId)))))
             event.cancel();
     }
 

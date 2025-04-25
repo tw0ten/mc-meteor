@@ -63,10 +63,15 @@ public abstract class ClientPlayerInteractionManagerMixin implements IClientPlay
     private void onClickSlot(int syncId, int slotId, int button, SlotActionType actionType, PlayerEntity player, CallbackInfo info) {
         if (slotId == -999) {
             // Clicking outside of inventory
-            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.getCursorStack())).isCancelled()) info.cancel();
+            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.getCursorStack(), slotId)).isCancelled()) info.cancel();
         }
         else if (actionType == SlotActionType.THROW) {
-            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.slots.get(slotId).getStack())).isCancelled()) info.cancel();
+            if (Modules.get().get(InventoryTweaks.class).lockPressed()) {
+                Modules.get().get(InventoryTweaks.class).lock(slotId);
+                info.cancel();
+                return;
+            }
+            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.slots.get(slotId).getStack(), slotId).isCancelled())) info.cancel();
         }
     }
 
@@ -132,7 +137,7 @@ public abstract class ClientPlayerInteractionManagerMixin implements IClientPlay
 
     @Inject(method = "dropCreativeStack", at = @At("HEAD"), cancellable = true)
     private void onDropCreativeStack(ItemStack stack, CallbackInfo info) {
-        if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(stack)).isCancelled()) info.cancel();
+        if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(stack, mc.player.getInventory().getSlotWithStack(stack))).isCancelled()) info.cancel();
     }
 
     @Redirect(method = "updateBlockBreakingProgress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;blockBreakingCooldown:I", opcode = Opcodes.PUTFIELD, ordinal = 1))

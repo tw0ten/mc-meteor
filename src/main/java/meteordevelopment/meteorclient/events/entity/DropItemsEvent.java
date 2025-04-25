@@ -8,15 +8,12 @@ package meteordevelopment.meteorclient.events.entity;
 import meteordevelopment.meteorclient.events.Cancellable;
 import net.minecraft.item.ItemStack;
 
+// TODO: 😭
 public class DropItemsEvent extends Cancellable {
     private static final DropItemsEvent INSTANCE = new DropItemsEvent();
 
     public ItemStack itemStack;
     public int slotId;
-
-    public static DropItemsEvent get(ItemStack itemStack) {
-        return get(itemStack, -1);
-    }
 
     public static DropItemsEvent get(ItemStack itemStack, int slotId) {
         INSTANCE.setCancelled(false);
