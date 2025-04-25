@@ -344,7 +344,12 @@ public class Notifier extends Module {
                     ChatUtils.sendMsg(getChatId(entity), Formatting.GRAY, "(highlight)%s (default)popped (highlight)%d (default)%s.", entity.getName().getString(), pops, pops == 1 ? "totem" : "totems");
                 }
             }
-            case RemoveEntityStatusEffectS2CPacket packet when effectRanOut.get() && packet.getEntity(mc.world) == mc.player -> info("Effect ran out: (highlight)%s %d(default).", Names.get(packet.effect().value()), mc.player.getStatusEffect(packet.effect()).getAmplifier() + 1);
+            case RemoveEntityStatusEffectS2CPacket packet when effectRanOut.get() && packet.getEntity(mc.world) == mc.player -> {
+                final var level = mc.player.getStatusEffect(packet.effect()).getAmplifier();
+                info("Effect ran out: (highlight)%s%s(default).",
+                    Names.get(packet.effect().value()),
+                    level == 0 ? "" : (" " + Text.translatableWithFallback("potion.potency." + level, String.valueOf(level)).getString()));
+            }
             default -> {}
         }
     }

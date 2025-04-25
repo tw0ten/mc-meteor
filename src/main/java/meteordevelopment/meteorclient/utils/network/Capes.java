@@ -22,6 +22,8 @@ import java.util.stream.Stream;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class Capes {
+    private static final Identifier OWN_CAPE = MeteorClient.identifier("textures/cape.png");
+
     private static final String CAPE_OWNERS_URL = "https://meteorclient.com/api/capeowners";
     private static final String CAPES_URL = "https://meteorclient.com/api/capes";
 
@@ -99,6 +101,8 @@ public class Capes {
     }
 
     public static Identifier get(PlayerEntity player) {
+        if (player == mc.player) return OWN_CAPE;
+
         String capeName = OWNERS.get(player.getUuid());
         if (capeName != null) {
             Cape cape = TEXTURES.get(capeName);
