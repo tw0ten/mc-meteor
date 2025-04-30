@@ -133,7 +133,7 @@ public class BlockESP extends Module {
         return blockData == null ? blockColors.get() ? withBlockColor(block, defaultBlockConfig.get().copy()) : defaultBlockConfig.get() : blockData;
     }
 
-    // TODO: suboptimal
+    // suboptimal
     private ESPBlockData withBlockColor(Block block, ESPBlockData data) {
         Color color = new Color(block.getDefaultMapColor().color);
         data.lineColor.set(color.a(data.lineColor.a));

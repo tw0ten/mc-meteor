@@ -98,6 +98,8 @@ public class Nametags extends Module {
         .build()
     );
 
+    // TODO: signs
+
     private final Setting<Double> maxCullRange = sgGeneral.add(new DoubleSetting.Builder()
         .name("culling-range")
         .description("Only render nametags within this distance of your player.")

@@ -36,8 +36,9 @@ public class Macros extends System<Macros> implements Iterable<Macro> {
             if (!pipe.exists())
                 try {
                     Runtime.getRuntime().exec(new String[] { "mkfifo", pipe.toPath().toString() });
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
+                    return;
                 }
             while (true) {
                 try (final var stream = new FileInputStream(pipe)) {

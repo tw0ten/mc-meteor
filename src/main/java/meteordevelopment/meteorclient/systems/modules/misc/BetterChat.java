@@ -101,13 +101,6 @@ public class BetterChat extends Module {
         .build()
     );
 
-    private final Setting<Boolean> antiAntiSpam = sgGeneral.add(new BoolSetting.Builder() // TODO
-        .name("anti-anti-spam")
-        .description("Prevent you from sending the same message twice.")
-        .defaultValue(true)
-        .build()
-    );
-
     private final Setting<Boolean> logTitles = sgGeneral.add(new BoolSetting.Builder()
         .name("log-titles")
         .description("Duplicates the big on screen fading text to chat.")

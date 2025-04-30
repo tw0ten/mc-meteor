@@ -120,7 +120,7 @@ public class ServerSpoof extends Module {
         event.connection.send(new ResourcePackStatusC2SPacket(packet.id(), ResourcePackStatusC2SPacket.Status.SUCCESSFULLY_LOADED));
 
         msg = Text.literal("This server has ");
-        msg.append(packet.required() ? "a required " : "an optional ").append("resource pack. ");
+        msg.append(packet.required() ? "a required" : "an optional").append(" resource pack. ");
 
         MutableText link = Text.literal("[Open URL]");
         link.setStyle(link.getStyle()
@@ -135,7 +135,6 @@ public class ServerSpoof extends Module {
             .withColor(Formatting.DARK_GREEN)
             .withUnderline(true)
             .withClickEvent(new RunnableClickEvent(() -> {
-                // TODO: does this thing actually work?
                 URL url = getParsedResourcePackUrl(packet.url());
                 if (url == null) error("Invalid resource pack URL: " + packet.url());
                 else {
