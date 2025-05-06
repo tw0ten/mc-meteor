@@ -35,4 +35,5 @@ jobs:
           prerelease: true
           title: Development Build
           files: |
-            build/libs/*.jar
+            build/libs/*-local-all.jar
+            build/libs/*-local.jar
