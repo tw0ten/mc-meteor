@@ -110,7 +110,9 @@ public abstract class ChatHudMixin implements IChatHud {
 
         if (event.isCancelled()) ci.cancel();
         else {
-            visibleMessages.removeIf(msg -> ((IChatHudLine) (Object) msg).meteor$getId() == nextId && nextId != 0);
+            synchronized (visibleMessages) {
+                visibleMessages.removeIf(msg -> msg == null || (((IChatHudLine) (Object) msg).meteor$getId() == nextId && nextId != 0));
+            }
 
             for (int i = messages.size() - 1; i > -1; i--) {
                 if (((IChatHudLine) (Object) messages.get(i)).meteor$getId() == nextId && nextId != 0) {

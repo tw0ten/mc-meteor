@@ -13,6 +13,7 @@ import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.movement.elytrafly.ElytraFly;
+import meteordevelopment.meteorclient.systems.modules.render.Freecam;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
@@ -199,6 +200,7 @@ public class AntiAFK extends Module {
     private boolean isAFK() {
         if (BaritoneUtils.IS_AVAILABLE && BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) return false;
         if (Modules.get().isActive(ElytraFly.class)) return false;
+        if (Modules.get().isActive(Freecam.class)) return true;
         return timeSinceLastInput() > 1000 * auto.get();
     }
 
