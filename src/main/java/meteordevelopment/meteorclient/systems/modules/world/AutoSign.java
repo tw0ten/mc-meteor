@@ -34,7 +34,7 @@ public class AutoSign extends Module {
 
         if (text == null) {
             text = packet.getText().clone();
-            info("Set text to:\n" + String.join("\n", text));
+            info("Set text to:\n%s", String.join("\n", text));
         }
     }
 

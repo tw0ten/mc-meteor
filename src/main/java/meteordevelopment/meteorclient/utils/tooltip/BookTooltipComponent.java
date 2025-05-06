@@ -14,6 +14,7 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+// TODO: fix
 public class BookTooltipComponent implements TooltipComponent, MeteorTooltipData {
     private static final Identifier TEXTURE_BOOK_BACKGROUND = Identifier.of("textures/gui/book.png");
 

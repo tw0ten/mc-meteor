@@ -40,7 +40,6 @@ public class InventoryTweaks extends Module {
     private final SettingGroup sgAutoDrop = settings.createGroup("Auto Drop");
     private final SettingGroup sgStealDump = settings.createGroup("Steal and Dump");
     private final SettingGroup sgAutoSteal = settings.createGroup("Auto Steal");
-    // private final SettingGroup sgAutoCraft = settings.createGroup("Auto Craft"); // TODO
 
     // General
 
@@ -245,7 +244,7 @@ public class InventoryTweaks extends Module {
         .build()
     );
 
-    private final boolean[] lockedSlots = new boolean[PlayerScreenHandler.OFFHAND_ID + 1];
+    private final boolean[] lockedSlots = new boolean[PlayerScreenHandler.OFFHAND_ID + 1]; // TODO
     private InventorySorter sorter;
     private boolean invOpened;
 
