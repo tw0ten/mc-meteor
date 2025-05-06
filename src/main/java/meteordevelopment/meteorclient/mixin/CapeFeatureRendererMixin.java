@@ -25,6 +25,7 @@ public abstract class CapeFeatureRendererMixin {
             Identifier id = Capes.get(player);
             return id == null ? original : id;
         }
+
         return original;
     }
 }
