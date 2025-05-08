@@ -7,7 +7,6 @@ package meteordevelopment.meteorclient.systems.modules.movement;
 
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.pathing.BaritoneUtils;
-import meteordevelopment.meteorclient.pathing.PathManagers;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -173,6 +172,7 @@ public class AntiAFK extends Module {
     private int strafeTimer = 0;
     private boolean direction = false;
     private float lastYaw;
+    private boolean wasAfk = false;
 
     @Override
     public void onActivate() {
@@ -212,8 +212,13 @@ public class AntiAFK extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Pre event) {
-        if (!isAFK()) return; // TODO: onActivate/Deactivate?
         if (!Utils.canUpdate()) return;
+        final var isAfk = isAFK();
+        if (wasAfk != isAfk)
+            if (isAfk) onActivate();
+            else onDeactivate();
+        wasAfk = isAfk;
+        if (!isAfk) return;
 
         // Jump
         if (jump.get()) {

@@ -9,6 +9,7 @@
 - Add block-colors option to Block-Esp.
 - Add confirm-disconnect option to Auto-Reconnect.
 - Add effect-ran-out and log-signs options to Notifier.
+- Add elytra-time option to Better-Tooltips.
 - Add named option to Item-Highlight.
 - Add no-beds option to No-Interact.
 - Add scroll option to Better-Tab.

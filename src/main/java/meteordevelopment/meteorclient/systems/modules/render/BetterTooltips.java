@@ -24,6 +24,7 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.*;
 import net.minecraft.component.type.SuspiciousStewEffectsComponent.StewEffect;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Bucketable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -171,6 +172,14 @@ public class BetterTooltips extends Module {
         .build()
     );
 
+    private final Setting<Boolean> elytraTime = sgOther.add(new BoolSetting.Builder()
+        .name("elytra-time")
+        .description("Convert elytra durability to remaining flight time.")
+        .defaultValue(true)
+        .onChanged(value -> updateTooltips = true)
+        .build()
+    );
+
     // Hide flags
 
     public final Setting<Boolean> tooltip = sgHideFlags.add(new BoolSetting.Builder()
@@ -201,6 +210,16 @@ public class BetterTooltips extends Module {
             // Hold-to-preview tooltip text is always added when needed.
             appendPreviewTooltipText(event, false);
             return;
+        }
+
+        // Elytra time
+        if (elytraTime.get() && event.itemStack().getItem() == Items.ELYTRA) {
+            final var durability = event.itemStack().getMaxDamage() - event.itemStack().getDamage() - 1;
+            if (durability > 0) {
+                final var unbreaking = Utils.getEnchantmentLevel(event.itemStack(), Enchantments.UNBREAKING);
+                final var seconds = (durability - 1) * (unbreaking + 1);
+                event.appendStart(Text.of("≈ %02d:%02d".formatted(seconds / 60, seconds % 60)));
+            }
         }
 
         // Status effects
