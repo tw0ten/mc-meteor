@@ -64,7 +64,7 @@ public class AutoReplenish extends Module {
 
     private final Setting<Boolean> searchHotbar = sgGeneral.add(new BoolSetting.Builder()
         .name("search-hotbar")
-        .description("Combine stacks in your hotbar/offhand as a last resort.")
+        .description("Combine stacks in your hotbar/offhand as a last resort.\nFIXME this shit fucking stunlocks itself if you have 7 and 64 in the hotbar")
         .defaultValue(false)
         .build()
     );

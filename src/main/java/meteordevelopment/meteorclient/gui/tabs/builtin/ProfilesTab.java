@@ -66,12 +66,12 @@ public class ProfilesTab extends Tab {
                 table.add(theme.label(profile.name.get())).expandCellX();
 
                 table.add(theme.button("Save")).widget()
-                    .action = YesNoPrompt.create()
+                    .action = YesNoPrompt.create(theme, this)
                     .title(profile.name.get()).message("Save this profile?")
                     .onYes(profile::save)::show;
 
                 table.add(theme.button("Load")).widget()
-                    .action = YesNoPrompt.create()
+                    .action = YesNoPrompt.create(theme, this)
                     .title(profile.name.get()).message("Load this profile?")
                     .onYes(profile::load)::show;
 
@@ -79,7 +79,7 @@ public class ProfilesTab extends Tab {
                     .action = () -> mc.setScreen(new EditProfileScreen(theme, profile, this::reload));
 
                 table.add(theme.minus()).widget()
-                    .action = YesNoPrompt.create()
+                    .action = YesNoPrompt.create(theme, this)
                     .title(profile.name.get()).message("Delete this profile?")
                     .onYes(() -> {
                         Profiles.get().remove(profile);

@@ -388,7 +388,7 @@ public class Notifier extends Module {
         if (logSigns.get())
             event.chunk().getBlockEntities().values().forEach((i) -> {
                 if (i instanceof SignBlockEntity sign)
-                    info("[%s]%s%s", logSigns.title, formatSignText(sign.getFrontText()), formatSignText(sign.getBackText()));
+                    info("[%s]" + formatSignText(sign.getFrontText()) + formatSignText(sign.getBackText()), logSigns.title);
             });
     }
 
