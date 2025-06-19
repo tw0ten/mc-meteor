@@ -160,12 +160,12 @@ public class Freecam extends Module {
 
         isSneaking = mc.options.sneakKey.isPressed();
 
-        forward = mc.options.forwardKey.isPressed();
-        backward = mc.options.backKey.isPressed();
-        right = mc.options.rightKey.isPressed();
-        left = mc.options.leftKey.isPressed();
-        up = mc.options.jumpKey.isPressed();
-        down = mc.options.sneakKey.isPressed();
+        forward = Input.isPressed(mc.options.forwardKey);
+        backward = Input.isPressed(mc.options.backKey);
+        right = Input.isPressed(mc.options.rightKey);
+        left = Input.isPressed(mc.options.leftKey);
+        up = Input.isPressed(mc.options.jumpKey);
+        down = Input.isPressed(mc.options.sneakKey);
 
         unpress();
         if (reloadChunks.get()) mc.worldRenderer.reload();
@@ -234,7 +234,7 @@ public class Freecam extends Module {
         }
 
         double s = 0.5;
-        if (mc.options.sprintKey.isPressed()) s = 1;
+        if (Input.isPressed(mc.options.sprintKey)) s = 1;
 
         boolean a = false;
         if (this.forward) {
@@ -277,7 +277,7 @@ public class Freecam extends Module {
         pos.set(pos.x + velX, pos.y + velY, pos.z + velZ);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onKey(KeyEvent event) {
         if (Input.isKeyPressed(GLFW.GLFW_KEY_F3)) return;
         if (checkGuiMove()) return;
@@ -315,7 +315,7 @@ public class Freecam extends Module {
         if (cancel) event.cancel();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     private void onMouseButton(MouseButtonEvent event) {
         if (checkGuiMove()) return;
 
