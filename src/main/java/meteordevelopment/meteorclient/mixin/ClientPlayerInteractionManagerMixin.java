@@ -60,11 +60,6 @@ public abstract class ClientPlayerInteractionManagerMixin implements IClientPlay
             if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.getCursorStack(), slotId)).isCancelled()) info.cancel();
         }
         else if (actionType == SlotActionType.THROW) {
-            if (Modules.get().get(InventoryTweaks.class).lockPressed()) {
-                Modules.get().get(InventoryTweaks.class).lock(slotId);
-                info.cancel();
-                return;
-            }
             if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.slots.get(slotId).getStack(), slotId).isCancelled())) info.cancel();
         }
     }
