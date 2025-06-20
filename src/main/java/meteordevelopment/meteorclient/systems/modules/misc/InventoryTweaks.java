@@ -83,13 +83,6 @@ public class InventoryTweaks extends Module {
         .build()
     );
 
-    private final Setting<Boolean> armorStorage = sgGeneral.add(new BoolSetting.Builder()
-        .name("armor-storage")
-        .description("Allows you to put normal items in your armor slots.")
-        .defaultValue(true)
-        .build()
-    );
-
     // Sorting
 
     private final Setting<Boolean> sortingEnabled = sgSorting.add(new BoolSetting.Builder()
@@ -453,10 +446,6 @@ public class InventoryTweaks extends Module {
 
     public boolean mouseDragItemMove() {
         return isActive() && mouseDragItemMove.get();
-    }
-
-    public boolean armorStorage() {
-        return isActive() && armorStorage.get();
     }
 
     public boolean canSteal(ScreenHandler handler) {
