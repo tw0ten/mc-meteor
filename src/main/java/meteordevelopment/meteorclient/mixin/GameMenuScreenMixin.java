@@ -20,7 +20,7 @@ public class GameMenuScreenMixin {
     @Unique
     private int confirm = 0;
 
-    @Inject(method = "disconnect", at = @At("HEAD"), cancellable = true)
+    // @Inject(method = "disconnect", at = @At("HEAD"), cancellable = true)
     private void disconnect(final CallbackInfo ci) {
         final var clicks = Modules.get().get(AutoReconnect.class).confirmDisconnect.get();
 
