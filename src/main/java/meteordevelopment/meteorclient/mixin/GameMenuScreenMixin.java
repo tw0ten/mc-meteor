@@ -1,7 +1,6 @@
 package meteordevelopment.meteorclient.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,18 +14,15 @@ import net.minecraft.text.Text;
 
 @Mixin(GameMenuScreen.class)
 public class GameMenuScreenMixin {
-    @Shadow
-    private ButtonWidget exitButton;
     @Unique
     private int confirm = 0;
 
-    // @Inject(method = "disconnect", at = @At("HEAD"), cancellable = true)
-    private void disconnect(final CallbackInfo ci) {
+    @Inject(method = "method_19836", at = @At("HEAD"), cancellable = true)
+    private void disconnect(final ButtonWidget button, final CallbackInfo ci) {
         final var clicks = Modules.get().get(AutoReconnect.class).confirmDisconnect.get();
 
         if (confirm++ < clicks) {
-            exitButton.active = true;
-            exitButton.setMessage(Text.of("Confirm?" + (confirm == clicks ? "" : " (" + confirm + "/" + clicks + ")")));
+            button.setMessage(Text.of("Confirm?" + (confirm == clicks ? "" : " (" + confirm + "/" + clicks + ")")));
             ci.cancel();
         }
     }
