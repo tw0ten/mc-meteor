@@ -47,9 +47,13 @@ public class StarscriptTextBoxRenderer implements WTextBox.Renderer {
     public List<String> getCompletions(String text, int position) {
         List<String> completions = new ArrayList<>();
 
+        try {
         MeteorStarscript.ss.getCompletions(text, position, (completion, function) -> {
             completions.add(function ? completion + "(" : completion);
         });
+        }catch(Throwable e) {
+            // TODO: what??????/
+        }
 
         completions.sort(String::compareToIgnoreCase);
 
