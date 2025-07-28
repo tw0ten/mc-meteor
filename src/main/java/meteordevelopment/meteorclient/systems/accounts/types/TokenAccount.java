@@ -20,6 +20,9 @@ import meteordevelopment.meteorclient.utils.misc.NbtException;
 import net.minecraft.client.session.Session;
 import net.minecraft.nbt.NbtCompound;
 
+import static meteordevelopment.meteorclient.MeteorClient.mc;
+
+
 // TODO
 public class TokenAccount extends Account<TokenAccount> {
     public TokenAccount(String token) {
@@ -27,10 +30,8 @@ public class TokenAccount extends Account<TokenAccount> {
         this.token = token;
     }
 
-    private static final Environment ENVIRONMENT = new Environment("http://sessionserver.thealtening.com",
-            "http://authserver.thealtening.com", "The Altening");
-    private static final YggdrasilAuthenticationService SERVICE = new YggdrasilAuthenticationService(
-            ((MinecraftClientAccessor) mc).getProxy(), ENVIRONMENT);
+    private static final Environment ENVIRONMENT = new Environment("http://sessionserver.thealtening.com", "http://authserver.thealtening.com", "The Altening");
+    private static final YggdrasilAuthenticationService SERVICE = new YggdrasilAuthenticationService(((MinecraftClientAccessor) mc).meteor$getProxy(), ENVIRONMENT);
     private String token;
     private @Nullable WaybackAuthLib auth;
 
@@ -61,10 +62,8 @@ public class TokenAccount extends Account<TokenAccount> {
 
     @Override
     public boolean login() {
-        if (auth == null)
-            return false;
-        applyLoginEnvironment(SERVICE, YggdrasilMinecraftSessionServiceAccessor
-                .createYggdrasilMinecraftSessionService(SERVICE.getServicesKeySet(), SERVICE.getProxy(), ENVIRONMENT));
+        if (auth == null) return false;
+        applyLoginEnvironment(SERVICE, YggdrasilMinecraftSessionServiceAccessor.meteor$createYggdrasilMinecraftSessionService(SERVICE.getServicesKeySet(), SERVICE.getProxy(), ENVIRONMENT));
 
         try {
             setSession(new Session(auth.getCurrentProfile().getName(), auth.getCurrentProfile().getId(),
