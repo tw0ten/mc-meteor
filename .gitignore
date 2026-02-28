@@ -3,9 +3,9 @@
 .settings
 .project
 .classpath
-build
+build/
 out
-run
+/run
 bin
 logs
 .github/builds/node_modules
