@@ -133,6 +133,8 @@ public class Hud extends System<Hud> implements Iterable<HudElement> {
         register(MapHud.INFO);
         register(KeyboardHud.INFO);
 
+        register(RadarHud.INFO);
+
         // Default config
         if (isFirstInit) resetToDefaultElements();
     }

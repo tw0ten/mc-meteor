@@ -84,6 +84,9 @@ public class MeteorStarscript {
         ss.set("time", () -> Value.string(LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))));
         ss.set("cps", () -> Value.number(CPSUtils.getCpsAverage()));
 
+        final var START_TIMESTAMP = System.currentTimeMillis();
+        ss.set("uptime", () -> Value.number((System.currentTimeMillis() - START_TIMESTAMP) / 1000l));
+
         // Meteor
         ss.set("meteor", new ValueMap()
             .set("name", MeteorClient.NAME)
