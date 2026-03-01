@@ -28,7 +28,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.dimension.DimensionTypes;
 
 import java.util.*;
 
@@ -286,7 +285,7 @@ public class RadarHud extends HudElement {
             for (var z = 0; z < s; z++) {
                 bp.setZ(z);
 
-                for (var y = w.getDimensionEntry().matchesId(DimensionTypes.THE_NETHER.getRegistry())
+                for (var y = w.getDimension().hasCeiling()
                     ? 64
                     : c.sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x, z); y >= c.getBottomY(); y--) {
                     final var block = c.getBlockState(bp.setY(y));
